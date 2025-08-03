@@ -1,0 +1,93 @@
+// Responsive Design
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 1rem;
+  }
+
+  .nav {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background-color: var(--primary-color);
+    transition: right 0.3s;
+    z-index: 99;
+  }
+
+  .nav-open {
+    right: 0;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1rem;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 70px;
+    right: -280px;
+    height: calc(100vh - 70px);
+    transition: right 0.3s;
+    z-index: 98;
+  }
+
+  .sidebar.open {
+    right: 0;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-container {
+    padding: 2rem 1rem 1rem;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 0.75rem;
+  }
+
+  .logo h1 {
+    font-size: 1.25rem;
+  }
+
+  .main-content {
+    padding: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .content-card {
+    padding: 1rem;
+  }
+} 
