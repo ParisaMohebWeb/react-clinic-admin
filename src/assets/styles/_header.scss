@@ -86,3 +86,10 @@
   margin: 2px 0;
   transition: 0.3s;
 } 
+.btn-danger{
+  background-color: var(--danger-color);
+  color: white;
+  &:hover{
+    transform: translateY(-3px);
+  }
+}

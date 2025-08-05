@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import { ToastContainer } from 'react-toastify';
+
 
 /**
  * کامپوننت اصلی برنامه
@@ -24,8 +27,10 @@ import Dashboard from './pages/Dashboard';
  */
 function App() {
     return (
+    <>
         <Router>
             <Routes>
+                <Route path='/login' element={<Login/>} />
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Dashboard />} />
                     <Route path="patients" element={<div>صفحه بیماران</div>} />
@@ -38,6 +43,8 @@ function App() {
                 </Route>
             </Routes>
         </Router>
+        <ToastContainer/>
+    </>
     );
 }
 
