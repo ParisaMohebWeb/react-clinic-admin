@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
   onClose: () => void;
@@ -14,11 +15,12 @@ export default function AddSpecialites({ onClose,onSuccess }: Props) {
       await axios.post("https://nowruzi.top/api/Clinic/specialties", {
         name: speciality,
       });
-      console.log("ارسال موفق بود");
+      toast.success('موفقیت افزوده شد')
       onSuccess();
       
     } catch (error) {
       console.error("خطا در ارسال:", error);
+      toast.error('خطایی رخ داده است')
     }
 
     // بستن مدال بعد از ارسال
@@ -36,8 +38,7 @@ export default function AddSpecialites({ onClose,onSuccess }: Props) {
       />
 
       <button type="button" onClick={handleSubmit}>
-        ثبت تخصص
-      </button>
+        افزودن    </button>
     </form>
   );
 }

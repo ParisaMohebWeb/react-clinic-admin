@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import AddSpecialites from "../components/AddSpecialites";
+import RemoveSpecialtes from "../components/RemoveSpecialtes";
 type Ispecialites = {
   id: number;
   name: string;
@@ -11,11 +12,11 @@ type Ispecialites = {
 export default function Specialties() {
   const [specialties, setSpecialties] = useState<Ispecialites[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   // فرضی: آدرس API
   const getData = async () => {
     const res = await axios.get("https://nowruzi.top/api/Clinic/specialties");
-    console.log(res.data);
     setSpecialties(res.data);
     setIsLoading(false);
   };
@@ -40,30 +41,47 @@ export default function Specialties() {
     <div className="specialites-tb">
       <p>لیست تخصص ها</p>
       <table>
-        {rows.map((group, index) => (
-          <tr key={index}>
-            {group.map((item, idx) => (
-              <td key={idx}>{item.name}</td>
-            ))}
-
-            {group.length < 3 &&
-              Array.from({ length: 3 - group.length }).map((_, i) => (
-                <td key={`empty-${i}`}></td>
+        <tbody>
+          {rows.map((group, index) => (
+            <tr key={index}>
+              {group.map((item, idx) => (
+                <td key={idx}>{item.name}</td>
               ))}
-          </tr>
-        ))}
+
+              {group.length < 3 &&
+                Array.from({ length: 3 - group.length }).map((_, i) => (
+                  <td key={`empty-${i}`}></td>
+                ))}
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className="amaliyat">
-        <button onClick={() => setIsModalOpen(true)}>افزودن تخصص جدید</button>
+        <button onClick={() => setIsAddModalOpen(true)}>
+          افزودن تخصص جدید
+        </button>
         <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
           title="افزودن تخصص"
         >
-          <AddSpecialites onClose={() => setIsModalOpen(false)} onSuccess={getData} />
+          <AddSpecialites
+            onClose={() => setIsAddModalOpen(false)}
+            onSuccess={getData}
+          />
         </Modal>
         <button>ویرایش تخصص</button>
-        <button>حذف تخصص</button>
+        <button onClick={() => setIsRemoveModalOpen(true)}>حذف تخصص</button>
+        <Modal
+          isOpen={isRemoveModalOpen}
+          onClose={() => setIsRemoveModalOpen(false)}
+          title="حذف تخصص"
+        >
+          <RemoveSpecialtes
+            onClose={() => setIsRemoveModalOpen(false)}
+            onSuccess={getData}
+          />
+        </Modal>
       </div>
     </div>
   );

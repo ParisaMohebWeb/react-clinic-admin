@@ -17,7 +17,9 @@
   border-spacing: 0;
   table-layout: fixed;
 
-  > tr {
+
+ >tbody{
+   > tr{
     > td {
       padding-right: 10px;
       border-bottom: 3px solid var(--primary-color);
@@ -31,11 +33,12 @@
       }
     }
   }
+ }
 }
-.specialites-tb table tr:last-child td {
+.specialites-tb table tbody tr:last-child td {
   border-bottom: none;
 }
-.specialites-tb table td:not(:last-child) {
+.specialites-tb table tbody td:not(:last-child) {
   border-left: 3px solid var(--primary-color);
 }
 
@@ -72,13 +75,17 @@ form {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
-  > input {
+  > input{
     padding: 7px 14px;
     border-radius: 5px;
     caret-color: var(--primary-color);
     &:focus {
       outline-color: var(--primary-color);
     }
+  }
+    > select {
+    padding: 7px 14px;
+    border-radius: 5px;
   }
   
   >button{
