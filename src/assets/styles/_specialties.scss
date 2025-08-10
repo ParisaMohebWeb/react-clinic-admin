@@ -1,36 +1,93 @@
 .specialites-tb {
-  h3 {
+  > p {
+    background-color: var(--primary-color);
+    color: white;
+    margin-bottom: 5px;
     padding: 10px;
-    margin-bottom: 20px;
-    font-size: 22px;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 6px 6px 0 0;
   }
 }
 .specialites-tb table {
   width: 100%;
   border: 3px solid var(--primary-color);
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 0 0 6px 6px;
   border-spacing: 0;
   table-layout: fixed;
+
   > tr {
     > td {
       padding-right: 10px;
       border-bottom: 3px solid var(--primary-color);
       text-align: center;
       padding: 15px;
-      transition: .3s;
+      transition: 0.3s;
       cursor: pointer;
-      &:hover{
+      &:hover {
         background-color: var(--primary-color);
         color: white;
       }
     }
   }
 }
-
 .specialites-tb table tr:last-child td {
   border-bottom: none;
 }
 .specialites-tb table td:not(:last-child) {
   border-left: 3px solid var(--primary-color);
+}
+
+// amaliyat
+
+.amaliyat {
+  background-color: var(--primary-color);
+  margin-top: 5px;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  > button {
+    width: 30%;
+    padding: 10px;
+    gap: 10px;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    transition: 0.4s;
+    cursor: pointer;
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+}
+
+// فرم اضافه کردن 
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  > input {
+    padding: 7px 14px;
+    border-radius: 5px;
+    caret-color: var(--primary-color);
+    &:focus {
+      outline-color: var(--primary-color);
+    }
+  }
+  
+  >button{
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer
+  }
 }
