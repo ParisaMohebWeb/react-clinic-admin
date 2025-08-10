@@ -1,0 +1,36 @@
+.specialites-tb {
+  h3 {
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+}
+.specialites-tb table {
+  width: 100%;
+  border: 3px solid var(--primary-color);
+  overflow: hidden;
+  border-radius: 6px;
+  border-spacing: 0;
+  table-layout: fixed;
+  > tr {
+    > td {
+      padding-right: 10px;
+      border-bottom: 3px solid var(--primary-color);
+      text-align: center;
+      padding: 15px;
+      transition: .3s;
+      cursor: pointer;
+      &:hover{
+        background-color: var(--primary-color);
+        color: white;
+      }
+    }
+  }
+}
+
+.specialites-tb table tr:last-child td {
+  border-bottom: none;
+}
+.specialites-tb table td:not(:last-child) {
+  border-left: 3px solid var(--primary-color);
+}
