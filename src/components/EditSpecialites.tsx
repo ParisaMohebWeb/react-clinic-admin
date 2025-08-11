@@ -10,8 +10,6 @@ type Ispecialites = {
 interface Props {
   onClose: () => void;
   onSuccess: () => void;
-  id?: number;
-  name?: string;
 }
 
 export default function EditSpecialites({ onClose, onSuccess }: Props) {
@@ -60,7 +58,7 @@ export default function EditSpecialites({ onClose, onSuccess }: Props) {
         ))}
       </select>
       <input type="text" placeholder="نام جدید" onChange={(e)=>setNewName(e.target.value)} />
-      <button onClick={handleEdit}>ویرایش</button>
+      <button type="button" onClick={handleEdit}>ویرایش</button>
     </form>
   );
 }

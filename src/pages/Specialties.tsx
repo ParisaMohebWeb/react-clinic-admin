@@ -80,7 +80,7 @@ export default function Specialties() {
           title="ویرایش تخصص"
         >
           <EditSpecialites
-            onClose={() => setIsEditModalOpen}
+            onClose={() => setIsEditModalOpen(false) }
             onSuccess={getData}
           />
         </Modal>
