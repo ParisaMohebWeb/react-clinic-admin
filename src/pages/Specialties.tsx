@@ -47,7 +47,9 @@ export default function Specialties() {
           {rows.map((group, index) => (
             <tr key={index}>
               {group.map((item, idx) => (
-                <td key={idx}>{item.name}</td>
+                <td key={idx}>{item.name}
+                <p> تعداد دکتر: {item.doctorsCount}</p>
+                </td>
               ))}
 
               {group.length < 3 &&
