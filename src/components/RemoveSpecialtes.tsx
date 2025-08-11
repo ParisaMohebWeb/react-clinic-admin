@@ -23,6 +23,7 @@ export default function RemoveSpecialites({ onClose, onSuccess }: Props) {
 
   // api حذف تخصص
   const handleSubmit = async () => {
+    if (!specialityId) return toast.error("لطفا تخصص را انتخاب کنید");
     try {
       await axios.delete(
         `https://nowruzi.top/api/Clinic/specialties/${specialityId}`

@@ -4,23 +4,23 @@ import { toast } from "react-toastify";
 
 interface Props {
   onClose: () => void;
-  onSuccess:()=>void
+  onSuccess: () => void;
 }
 
-export default function AddSpecialites({ onClose,onSuccess }: Props) {
+export default function AddSpecialites({ onClose, onSuccess }: Props) {
   const [speciality, setSpeciality] = useState("");
 
   const handleSubmit = async () => {
+    if (!speciality) return toast.error("لطفا تخصص را وارد کنید");
     try {
       await axios.post("https://nowruzi.top/api/Clinic/specialties", {
         name: speciality,
       });
-      toast.success('موفقیت افزوده شد')
+      toast.success("موفقیت افزوده شد");
       onSuccess();
-      
     } catch (error) {
       console.error("خطا در ارسال:", error);
-      toast.error('خطایی رخ داده است')
+      toast.error("خطایی رخ داده است");
     }
 
     // بستن مدال بعد از ارسال
@@ -38,7 +38,8 @@ export default function AddSpecialites({ onClose,onSuccess }: Props) {
       />
 
       <button type="button" onClick={handleSubmit}>
-        افزودن    </button>
+        افزودن{" "}
+      </button>
     </form>
   );
 }
