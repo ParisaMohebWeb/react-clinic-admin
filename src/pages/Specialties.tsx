@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import AddSpecialites from "../components/AddSpecialites";
 import RemoveSpecialtes from "../components/RemoveSpecialtes";
+import EditSpecialites from "../components/EditSpecialites";
 type Ispecialites = {
   id: number;
   name: string;
@@ -14,6 +15,7 @@ export default function Specialties() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   // فرضی: آدرس API
   const getData = async () => {
     const res = await axios.get("https://nowruzi.top/api/Clinic/specialties");
@@ -70,7 +72,19 @@ export default function Specialties() {
             onSuccess={getData}
           />
         </Modal>
-        <button>ویرایش تخصص</button>
+
+        <button onClick={() => setIsEditModalOpen(true)}>ویرایش تخصص</button>
+        <Modal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          title="ویرایش تخصص"
+        >
+          <EditSpecialites
+            onClose={() => setIsEditModalOpen}
+            onSuccess={getData}
+          />
+        </Modal>
+
         <button onClick={() => setIsRemoveModalOpen(true)}>حذف تخصص</button>
         <Modal
           isOpen={isRemoveModalOpen}
