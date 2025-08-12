@@ -26,6 +26,43 @@ export default function Specialties() {
     getData();
   }, []);
 
+  //جلو گیری از اسکرول خوردن صفحه
+
+  useEffect(() => {
+    if (isAddModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isAddModalOpen]);
+
+  useEffect(() => {
+    if (isRemoveModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isRemoveModalOpen]);
+
+  useEffect(() => {
+    if (isEditModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isEditModalOpen]);
+
+
+
   // تقسیم آرایه به گروه‌های سه‌تایی
   const rows = [];
   for (let i = 0; i < specialties.length; i += 3) {
@@ -47,8 +84,9 @@ export default function Specialties() {
           {rows.map((group, index) => (
             <tr key={index}>
               {group.map((item, idx) => (
-                <td key={idx}>{item.name}
-                <p> تعداد دکتر: {item.doctorsCount}</p>
+                <td key={idx}>
+                  {item.name}
+                  <p> تعداد دکتر: {item.doctorsCount}</p>
                 </td>
               ))}
 
@@ -82,7 +120,7 @@ export default function Specialties() {
           title="ویرایش تخصص"
         >
           <EditSpecialites
-            onClose={() => setIsEditModalOpen(false) }
+            onClose={() => setIsEditModalOpen(false)}
             onSuccess={getData}
           />
         </Modal>
