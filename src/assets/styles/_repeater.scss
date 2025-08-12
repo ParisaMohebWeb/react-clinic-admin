@@ -1,0 +1,43 @@
+.btn-blue {
+  background-color: var(--primary-color);
+  padding: 7px;
+  color: white;
+  border: none;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 0 3px rgb(102, 97, 97);
+  }
+}
+.btn-green {
+  background-color: var(--success-color);
+  padding: 7px;
+  color: white;
+  border: none;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 0 3px rgb(102, 97, 97);
+  }
+}
+.btn-red {
+  background-color: var(--danger-color);
+  padding: 7px;
+  color: white;
+  border: none;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 0 3px rgb(102, 97, 97);
+  }
+}
+
+.input-blue{
+  outline-color:var(--primary-color) ;
+  padding:7px 15px;
+  border-radius: 7px;
+  caret-color: var(--primary-color);
+}
