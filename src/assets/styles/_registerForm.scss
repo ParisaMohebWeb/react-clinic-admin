@@ -1,0 +1,40 @@
+.register-form {
+  align-items: center;
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  max-width: 450px;
+  >h3{
+background-color: var(--primary-color);
+width: 100%;
+text-align: center;
+padding: 10px;
+color: white;
+  }
+  > form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    > div {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      margin: 20px;
+      >select{
+        width: 250px;
+      }
+      >input{
+        width: 250px;
+      }
+    }
+  }
+}
+.error-text{
+  color: red;
+  font-size: 13px;
+  position: absolute;
+  bottom: -22px;
+  left: 0;
+  
+}

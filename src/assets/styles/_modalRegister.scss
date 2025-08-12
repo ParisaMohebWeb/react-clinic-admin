@@ -1,0 +1,53 @@
+/* پس‌زمینه تار مدال */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.664);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease forwards;
+  z-index: 200;
+}
+
+/* محتوای مدال */
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  min-width: 350px;
+  position: relative;
+  animation: scaleIn 0.3s ease forwards;
+}
+
+/* دکمه بستن */
+.modal-close {
+  position: absolute;
+  top: 5px;
+  right:5px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* انیمیشن محو شدن */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* انیمیشن بزرگ شدن مدال */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

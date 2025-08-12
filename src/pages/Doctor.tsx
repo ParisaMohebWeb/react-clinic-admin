@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ModalRegister from "../components/ModalRegister";
+import RegisterForm from "../components/RegisterForm";
+import { toast } from "react-toastify";
 
 interface IDoctor {
   id: number;
@@ -20,6 +23,7 @@ interface IDoctor {
 export default function Doctor() {
   const [doctorInfo, setDoctorInfo] = useState<IDoctor[]>([]);
   const [specialties, setSpecialties] = useState<Record<number, string>>({});
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const GetDocterList = async () => {
@@ -32,14 +36,14 @@ export default function Doctor() {
         for (const doctor of res.data) {
           const id = doctor.specialty.id;
           if (!specialtyMap[id]) {
-           try{
-             const specialtyRes = await axios.get(
-              `https://nowruzi.top/api/Clinic/specialties/${id}`
-            );
-            specialtyMap[id] = specialtyRes.data.name;
-           }catch(err){
-            console.log(err)
-           }
+            try {
+              const specialtyRes = await axios.get(
+                `https://nowruzi.top/api/Clinic/specialties/${id}`
+              );
+              specialtyMap[id] = specialtyRes.data.name;
+            } catch (err) {
+              console.log(err);
+            }
           }
         }
         setSpecialties(specialtyMap);
@@ -49,6 +53,19 @@ export default function Doctor() {
     };
     GetDocterList();
   }, []);
+
+  // برای کنترل اسکرول نخوردن صفحه بعد از باز شدن مدال
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden"; // قفل اسکرول
+    } else {
+      document.body.style.overflow = "auto"; // برگردوندن حالت عادی
+    }
+    // تمیزکاری در صورت ترک صفحه
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showModal]);
 
   return (
     <div className="doctor-page">
@@ -61,7 +78,21 @@ export default function Doctor() {
             placeholder="🔎جستجو پزشک"
           />
         </div>
-        <button className="btn-green"> ➕ افزودن پزشک</button>
+        <button onClick={() => setShowModal(true)} className="btn-green">
+          {" "}
+          ➕ افزودن پزشک
+        </button>
+        {showModal && (
+          <ModalRegister onClose={() => setShowModal(false)}>
+            <RegisterForm
+              onClose={() => setShowModal(false)}
+              onSuccess={() => {
+                toast.success("تخصص اضافه شد");
+                setShowModal(false);
+              }}
+            />
+          </ModalRegister>
+        )}
       </div>
 
       <table className="tb-doctor">
