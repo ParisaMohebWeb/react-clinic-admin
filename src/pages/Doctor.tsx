@@ -26,33 +26,34 @@ export default function Doctor() {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const GetDocterList = async () => {
-      try {
-        const res = await axios.get("https://nowruzi.top/api/Clinic/doctors");
-        setDoctorInfo(res.data);
-        setIsLoading(false);
+  const GetDocterList = async () => {
+    try {
+      const res = await axios.get("https://nowruzi.top/api/Clinic/doctors");
+      setDoctorInfo(res.data);
+      setIsLoading(false);
+      console.log(res.data);
 
-        // واکشی تخصص‌ها برای هر پزشک
-        const specialtyMap: Record<number, string> = {};
-        for (const doctor of res.data) {
-          const id = doctor.specialty.id;
-          if (!specialtyMap[id]) {
-            try {
-              const specialtyRes = await axios.get(
-                `https://nowruzi.top/api/Clinic/specialties/${id}`
-              );
-              specialtyMap[id] = specialtyRes.data.name;
-            } catch (err) {
-              console.log(err);
-            }
+      // واکشی تخصص‌ها برای هر پزشک
+      const specialtyMap: Record<number, string> = {};
+      for (const doctor of res.data) {
+        const id = doctor.specialty.id;
+        if (!specialtyMap[id]) {
+          try {
+            const specialtyRes = await axios.get(
+              `https://nowruzi.top/api/Clinic/specialties/${id}`
+            );
+            specialtyMap[id] = specialtyRes.data.name;
+          } catch (err) {
+            console.log(err);
           }
         }
-        setSpecialties(specialtyMap);
-      } catch (err) {
-        console.log(err, "خطایی در گرفتن داده رخ داده است");
       }
-    };
+      setSpecialties(specialtyMap);
+    } catch (err) {
+      console.log(err, "خطایی در گرفتن داده رخ داده است");
+    }
+  };
+  useEffect(() => {
     GetDocterList();
   }, []);
 
@@ -97,6 +98,7 @@ export default function Doctor() {
               onClose={() => setShowModal(false)}
               onSuccess={() => {
                 toast.success("تخصص اضافه شد");
+                GetDocterList();
                 setShowModal(false);
               }}
             />
