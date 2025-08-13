@@ -24,12 +24,14 @@ export default function Doctor() {
   const [doctorInfo, setDoctorInfo] = useState<IDoctor[]>([]);
   const [specialties, setSpecialties] = useState<Record<number, string>>({});
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const GetDocterList = async () => {
       try {
         const res = await axios.get("https://nowruzi.top/api/Clinic/doctors");
         setDoctorInfo(res.data);
+        setIsLoading(false);
 
         // واکشی تخصص‌ها برای هر پزشک
         const specialtyMap: Record<number, string> = {};
@@ -67,7 +69,14 @@ export default function Doctor() {
     };
   }, [showModal]);
 
-  return (
+  return isLoading ? (
+    <div className="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  ) : (
     <div className="doctor-page">
       <div>
         <div>

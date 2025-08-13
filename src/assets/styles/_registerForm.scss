@@ -3,6 +3,8 @@
   border: 1px solid var(--primary-color);
   border-radius: 6px;
   max-width: 450px;
+    font-size: 14px;
+
   >h3{
 background-color: var(--primary-color);
 width: 100%;
@@ -15,12 +17,13 @@ color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
+    height: 450px;
     > div {
       position: relative;
       display: flex;
       justify-content: space-between;
-      margin: 20px;
+      margin: 15px;
       >select{
         width: 250px;
       }
