@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ModalRegister from "../components/ModalRegister";
-import RegisterForm from "../components/RegisterForm";
 import { toast } from "react-toastify";
+import Modal from "../components/Modal";
+import DeleteDoctor from "../components/ِDeleteDoctor";
+import RegisterForm from "../components/RegisterForm";
 
 interface IDoctor {
   id: number;
@@ -25,11 +27,13 @@ export default function Doctor() {
   const [specialties, setSpecialties] = useState<Record<number, string>>({});
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectItem, setSelectItem] = useState<IDoctor | null>(null);
 
   const GetDocterList = async () => {
     try {
       const res = await axios.get("https://nowruzi.top/api/Clinic/doctors");
-      setDoctorInfo(res.data);
+      setDoctorInfo([...res.data].reverse());
       setIsLoading(false);
       console.log(res.data);
 
@@ -69,6 +73,17 @@ export default function Doctor() {
       document.body.style.overflow = "auto";
     };
   }, [showModal]);
+
+  useEffect(() => {
+    if (isDeleteModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isDeleteModalOpen]);
 
   return isLoading ? (
     <div className="lds-ellipsis">
@@ -121,7 +136,31 @@ export default function Doctor() {
               <td>{item.phoneNumber}</td>
               <td>{specialties[item.specialty.id] || "در حال بارگذاری..."}</td>
               <td>
-                <button className="btn-red">حذف</button>
+                <button
+                  onClick={() => {
+                    setIsDeleteModalOpen(true);
+                    setSelectItem(item);
+                  }}
+                  className="btn-red"
+                >
+                  حذف
+                </button>
+                <Modal
+                  isOpen={isDeleteModalOpen}
+                  onClose={() => setIsDeleteModalOpen(false)}
+                  title=""
+                >
+                  {selectItem && (
+                    <DeleteDoctor
+                      onClose={() => setIsDeleteModalOpen(false)}
+                      onSuccess={GetDocterList}
+                      DoctorId={selectItem.id}
+                      gender={selectItem.gender}
+                      fullName={selectItem.fullName}
+
+                    />
+                  )}
+                </Modal>
                 <button className="btn-green">ویرایش</button>
               </td>
             </tr>
