@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Modal from "../components/Modal";
 import DeleteDoctor from "../components/ِDeleteDoctor";
 import RegisterForm from "../components/RegisterForm";
+import EditDoctor from "../components/EditDoctor";
 
 interface IDoctor {
   id: number;
@@ -28,6 +29,7 @@ export default function Doctor() {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectItem, setSelectItem] = useState<IDoctor | null>(null);
 
   const GetDocterList = async () => {
@@ -84,6 +86,17 @@ export default function Doctor() {
       document.body.style.overflow = "auto";
     };
   }, [isDeleteModalOpen]);
+
+  useEffect(() => {
+    if (isEditModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isEditModalOpen]);
 
   return isLoading ? (
     <div className="lds-ellipsis">
@@ -157,11 +170,35 @@ export default function Doctor() {
                       DoctorId={selectItem.id}
                       gender={selectItem.gender}
                       fullName={selectItem.fullName}
-
                     />
                   )}
                 </Modal>
-                <button className="btn-green">ویرایش</button>
+                <button
+                  onClick={() => {
+                    setIsEditModalOpen(true);
+                    setSelectItem(item);
+                  }}
+                  className="btn-green"
+                >
+                  ویرایش
+                </button>
+                <Modal
+                  isOpen={isEditModalOpen}
+                  onClose={() => setIsEditModalOpen(false)}
+                  title=""
+                >
+                  {selectItem && (
+                    <EditDoctor
+                      onClose={() => setIsEditModalOpen(false)}
+                      onSuccess={GetDocterList}
+                      doctorId={selectItem.id}
+                      gender={selectItem.gender}
+                      fullName={selectItem.fullName}
+                      specialtyIdDoctor={selectItem.specialty.id}
+                      
+                    />
+                  )}
+                </Modal>
               </td>
             </tr>
           ))}
