@@ -3,11 +3,8 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import { ToastContainer } from 'react-toastify';
-<<<<<<< HEAD
-import Specialties from './pages/specialties';
-=======
+import Specialties from './pages/Specialties';
 import Doctor from './pages/Doctor';
->>>>>>> Doctors-page
 
 
 /**

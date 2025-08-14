@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ModalRegister from "../components/ModalRegister";
-import RegisterForm from "../components/RegisterForm";
 import { toast } from "react-toastify";
+import Modal from "../components/Modal";
+import DeleteDoctor from "../components/ِDeleteDoctor";
+import RegisterForm from "../components/RegisterForm";
+import EditDoctor from "../components/EditDoctor";
 
 interface IDoctor {
   id: number;
@@ -24,33 +27,39 @@ export default function Doctor() {
   const [doctorInfo, setDoctorInfo] = useState<IDoctor[]>([]);
   const [specialties, setSpecialties] = useState<Record<number, string>>({});
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectItem, setSelectItem] = useState<IDoctor | null>(null);
 
-  useEffect(() => {
-    const GetDocterList = async () => {
-      try {
-        const res = await axios.get("https://nowruzi.top/api/Clinic/doctors");
-        setDoctorInfo(res.data);
+  const GetDocterList = async () => {
+    try {
+      const res = await axios.get("https://nowruzi.top/api/Clinic/doctors");
+      setDoctorInfo([...res.data].reverse());
+      setIsLoading(false);
+      console.log(res.data);
 
-        // واکشی تخصص‌ها برای هر پزشک
-        const specialtyMap: Record<number, string> = {};
-        for (const doctor of res.data) {
-          const id = doctor.specialty.id;
-          if (!specialtyMap[id]) {
-            try {
-              const specialtyRes = await axios.get(
-                `https://nowruzi.top/api/Clinic/specialties/${id}`
-              );
-              specialtyMap[id] = specialtyRes.data.name;
-            } catch (err) {
-              console.log(err);
-            }
+      // واکشی تخصص‌ها برای هر پزشک
+      const specialtyMap: Record<number, string> = {};
+      for (const doctor of res.data) {
+        const id = doctor.specialty.id;
+        if (!specialtyMap[id]) {
+          try {
+            const specialtyRes = await axios.get(
+              `https://nowruzi.top/api/Clinic/specialties/${id}`
+            );
+            specialtyMap[id] = specialtyRes.data.name;
+          } catch (err) {
+            console.log(err);
           }
         }
-        setSpecialties(specialtyMap);
-      } catch (err) {
-        console.log(err, "خطایی در گرفتن داده رخ داده است");
       }
-    };
+      setSpecialties(specialtyMap);
+    } catch (err) {
+      console.log(err, "خطایی در گرفتن داده رخ داده است");
+    }
+  };
+  useEffect(() => {
     GetDocterList();
   }, []);
 
@@ -67,7 +76,36 @@ export default function Doctor() {
     };
   }, [showModal]);
 
-  return (
+  useEffect(() => {
+    if (isDeleteModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isDeleteModalOpen]);
+
+  useEffect(() => {
+    if (isEditModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isEditModalOpen]);
+
+  return isLoading ? (
+    <div className="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  ) : (
     <div className="doctor-page">
       <div>
         <div>
@@ -88,6 +126,7 @@ export default function Doctor() {
               onClose={() => setShowModal(false)}
               onSuccess={() => {
                 toast.success("تخصص اضافه شد");
+                GetDocterList();
                 setShowModal(false);
               }}
             />
@@ -110,8 +149,56 @@ export default function Doctor() {
               <td>{item.phoneNumber}</td>
               <td>{specialties[item.specialty.id] || "در حال بارگذاری..."}</td>
               <td>
-                <button className="btn-red">حذف</button>
-                <button className="btn-green">ویرایش</button>
+                <button
+                  onClick={() => {
+                    setIsDeleteModalOpen(true);
+                    setSelectItem(item);
+                  }}
+                  className="btn-red"
+                >
+                  حذف
+                </button>
+                <Modal
+                  isOpen={isDeleteModalOpen}
+                  onClose={() => setIsDeleteModalOpen(false)}
+                  title=""
+                >
+                  {selectItem && (
+                    <DeleteDoctor
+                      onClose={() => setIsDeleteModalOpen(false)}
+                      onSuccess={GetDocterList}
+                      DoctorId={selectItem.id}
+                      gender={selectItem.gender}
+                      fullName={selectItem.fullName}
+                    />
+                  )}
+                </Modal>
+                <button
+                  onClick={() => {
+                    setIsEditModalOpen(true);
+                    setSelectItem(item);
+                  }}
+                  className="btn-green"
+                >
+                  ویرایش
+                </button>
+                <Modal
+                  isOpen={isEditModalOpen}
+                  onClose={() => setIsEditModalOpen(false)}
+                  title=""
+                >
+                  {selectItem && (
+                    <EditDoctor
+                      onClose={() => setIsEditModalOpen(false)}
+                      onSuccess={GetDocterList}
+                      doctorId={selectItem.id}
+                      gender={selectItem.gender}
+                      fullName={selectItem.fullName}
+                      specialtyIdDoctor={selectItem.specialty.id}
+                      
+                    />
+                  )}
+                </Modal>
               </td>
             </tr>
           ))}

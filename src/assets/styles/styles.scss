@@ -1,5 +1,4 @@
 // Import all style modules
-<<<<<<< HEAD
 @use 'fonts';
 @use 'variables';
 @use 'base';
@@ -12,20 +11,8 @@
 @use 'login';
 @use 'specialties';
 @use 'loading';
-@use 'modal'
-=======
-@use "fonts";
-@use "variables";
-@use "base";
-@use "layout";
-@use "header";
-@use "sidebar";
-@use "dashboard";
-@use "footer";
-@use "responsive";
-@use "login";
+@use 'modal';
 @use "doctor";
 @use "repeater";
 @use "registerForm";
 @use "modalRegister";
->>>>>>> Doctors-page
