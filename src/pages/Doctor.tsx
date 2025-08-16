@@ -11,7 +11,7 @@ import { useDoctorStore } from "../assets/hooks/DoctorHook";
 import type { IDoctor } from "../assets/types/doctor";
 
 export default function Doctor() {
-  const defaultPageSize = 10; // ✅ تغییر به 10
+  const defaultPageSize = 10; //  تغییر به 10
   const { allDoctors, searchedDoctors, searchDone, setAllDoctors } =
     useDoctorStore();
 
@@ -22,7 +22,7 @@ export default function Doctor() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectItem, setSelectItem] = useState<IDoctor | null>(null);
 
-  // ✅ تعداد ردیف‌های قابل مشاهده
+  //  تعداد ردیف‌های قابل مشاهده
   const [visibleCount, setVisibleCount] = useState(defaultPageSize);
 
   const GetDocterList = useCallback(async () => {
@@ -81,7 +81,7 @@ export default function Doctor() {
   // تعیین لیست برای نمایش
   const doctorsToShow = searchDone ? searchedDoctors : allDoctors;
 
-  // ✅ فقط بخشی از دکترها رو نشون بده
+  //  فقط بخشی از دکترها رو نشون بده
   const doctorsVisible = doctorsToShow.slice(0, visibleCount);
 
   return isLoading ? (
@@ -189,8 +189,9 @@ export default function Doctor() {
           ))}
         </tbody>
       </table>
+    
+    {/* نمایش بیشتر */}
 
-      {/* ✅ دکمه نمایش بیشتر */}
       {visibleCount < doctorsToShow.length && (
         <div className="show-more">
           <button

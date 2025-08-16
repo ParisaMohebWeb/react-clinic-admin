@@ -16,8 +16,8 @@ export default function DoctorSearch() {
   const {
     setSearchedDoctors,
     resetSearch,
-    searchPage,      // ✅ فقط از استور
-    setSearchPage,   // ✅ فقط از استور
+    searchPage,    
+    setSearchPage,   
   } = useDoctorStore();
 
   const [searchItem, setSearchItem] = useState<ISearch>({
@@ -82,7 +82,7 @@ export default function DoctorSearch() {
       params.specialtyId = searchItem.specialtyId;
     if (searchItem.gender !== 0) params.gender = searchItem.gender;
 
-    params.page = searchPage;           // ✅ عدد صفحه از استور
+    params.page = searchPage;          
     params.pageSize = defaultPageSize;
 
     fetchDoctors(params);
@@ -100,7 +100,7 @@ export default function DoctorSearch() {
 
     // ریست کامل
     setSearchItem({ searchTerm: "", specialtyId: 0, gender: 0 });
-    setSearchPage(1);     // ✅ فقط صفحه را ۱ کن، اجرا را useEffect انجام می‌دهد
+    setSearchPage(1);    
     resetSearch();
     setNoResult(false);
     setHasNextPage(false);
@@ -145,7 +145,6 @@ export default function DoctorSearch() {
     }
   };
 
-  // ارسال فرم — فقط صفحه را ۱ کن؛ جستجو توسط useEffect انجام می‌شود
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     setSearchPage(1);
@@ -231,7 +230,7 @@ export default function DoctorSearch() {
 
       {noResult && <p className="text-error">هیچ نتیجه‌ای یافت نشد</p>}
 
-      {/* صفحه‌بندی فقط وقتی جستجو فعال و حداقل یک صفحه معتبر داریم */}
+      {/* صفحه‌بندی فقط وقتی جستجو فعال هست و حداقل یک صفحه معتبر داریم */}
       {!noResult && searchIsActive && (hasNextPage || searchPage > 1) && (
         <div>
           <button
