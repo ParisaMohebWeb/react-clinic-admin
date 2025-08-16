@@ -11,8 +11,8 @@ import { useDoctorStore } from "../assets/hooks/DoctorHook";
 import type { IDoctor } from "../assets/types/doctor";
 
 export default function Doctor() {
-  const defaultPageSize = 5;
-  const { allDoctors, searchedDoctors, searchDone, setAllDoctors,searchPage  } =
+  const defaultPageSize = 10; // ✅ تغییر به 10
+  const { allDoctors, searchedDoctors, searchDone, setAllDoctors } =
     useDoctorStore();
 
   const [specialties, setSpecialties] = useState<Record<number, string>>({});
@@ -21,6 +21,9 @@ export default function Doctor() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectItem, setSelectItem] = useState<IDoctor | null>(null);
+
+  // ✅ تعداد ردیف‌های قابل مشاهده
+  const [visibleCount, setVisibleCount] = useState(defaultPageSize);
 
   const GetDocterList = useCallback(async () => {
     try {
@@ -78,6 +81,9 @@ export default function Doctor() {
   // تعیین لیست برای نمایش
   const doctorsToShow = searchDone ? searchedDoctors : allDoctors;
 
+  // ✅ فقط بخشی از دکترها رو نشون بده
+  const doctorsVisible = doctorsToShow.slice(0, visibleCount);
+
   return isLoading ? (
     <div className="lds-ellipsis">
       <div></div>
@@ -120,13 +126,13 @@ export default function Doctor() {
             <th>عملیات</th>
           </tr>
 
-          {doctorsToShow.map((item, index) => (
+          {doctorsVisible.map((item, index) => (
             <tr key={item.id}>
-              <td> {(searchPage - 1) * defaultPageSize + index + 1}</td>
+              <td>{index + 1}</td>
               <td>{item.fullName}</td>
               <td>{item.phoneNumber}</td>
               <td>{specialties[item.specialty.id] || "در حال بارگذاری..."}</td>
-              <td> {item.schedulesCount} </td>
+              <td>{item.schedulesCount}</td>
 
               <td>
                 <button
@@ -160,7 +166,7 @@ export default function Doctor() {
                   }}
                   className="btn-green"
                 >
-                  <i className="bi bi-pen"></i>{" "}
+                  <i className="bi bi-pen"></i>
                 </button>
                 <Modal
                   isOpen={isEditModalOpen}
@@ -183,6 +189,18 @@ export default function Doctor() {
           ))}
         </tbody>
       </table>
+
+      {/* ✅ دکمه نمایش بیشتر */}
+      {visibleCount < doctorsToShow.length && (
+        <div className="show-more">
+          <button
+            onClick={() => setVisibleCount((prev) => prev + defaultPageSize)}
+            className="btn-blue"
+          >
+            نمایش بیشتر
+          </button>
+        </div>
+      )}
     </div>
   );
 }
