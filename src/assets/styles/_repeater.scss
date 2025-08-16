@@ -35,9 +35,35 @@
   }
 }
 
-.input-blue{
-  outline-color:var(--primary-color) ;
-  padding:5px 15px;
+.input-blue {
+  outline-color: var(--primary-color);
+  padding: 5px 15px;
   border-radius: 7px;
   caret-color: var(--primary-color);
+}
+
+.text-error {
+  font-size: 14px;
+  color: red;
+}
+
+.btn-circle {
+  border-radius: 50%;
+  margin: 10px;
+  cursor: pointer;
+  border: none;
+
+  > i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    font-size: 20px;
+    border-radius: 50%;
+
+    &:hover{
+    color: gray;
+
+    }
+  }
 }
