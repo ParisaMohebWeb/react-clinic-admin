@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import { ToastContainer } from 'react-toastify';
 import Specialties from './pages/Specialties';
 import Doctor from './pages/Doctor';
+import Patients from './pages/Patients';
 
 
 /**
@@ -35,7 +36,7 @@ function App() {
                 <Route path='/login' element={<Login/>} />
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Dashboard />} />
-                    <Route path="patients" element={<div>صفحه بیماران</div>} />
+                    <Route path="patients" element={<Patients/>} />
                     <Route path="doctors" element={<Doctor/>} />
                     <Route path="appointments" element={<div>صفحه نوبت‌ها</div>} />
                     <Route path="specialties" element={<Specialties/>} />
