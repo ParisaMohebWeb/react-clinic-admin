@@ -57,7 +57,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         formData
       );
       onSuccess();
-      console.log(res.data);
+      console.log(res.data)
     } catch (err) {
       console.error("خطا در ذخیره اطلاعات پزشکان", err);
       toast.error("خطا در ذخیره اطلاعات پزشکان");

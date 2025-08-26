@@ -7,7 +7,7 @@ import type { patientsType } from "../assets/types/patientsType";
 import PatientDetails from "../components/PatientDetails";
 import DeletePatient from "../components/ِDeletePatient";
 import SearchPatients from "../components/SearchPatients";
-import AddPatient from "../components/addPatient";
+import AddPatient from "../components/AddPatient"
 
 export default function Patients() {
   const defaultPageSize = 10;
