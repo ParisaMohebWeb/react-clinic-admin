@@ -35,9 +35,87 @@
   }
 }
 
-.input-blue{
-  outline-color:var(--primary-color) ;
-  padding:5px 15px;
+.input-blue {
+  outline-color: var(--primary-color);
+  padding: 5px 15px;
   border-radius: 7px;
   caret-color: var(--primary-color);
+  border-width: 1px;
+}
+
+.text-error {
+  font-size: 14px;
+  color: red;
+}
+
+.btn-circle {
+  border-radius: 50%;
+  margin: 10px;
+  cursor: pointer;
+  border: none;
+
+  > i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    font-size: 20px;
+    border-radius: 50%;
+
+    &:hover{
+    color: gray;
+
+    }
+  }
+}
+
+
+//  برای مودال 
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.363);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+ 
+}
+
+.modal-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 450px;
+  max-width: 90vw;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 50%;
+  top: 50%;
+  
+  transform: translate(-50%,-50%);
+  > h3 {
+    text-align: center;
+    background-color: var(--primary-color);
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: .4s;
+  &:hover{
+    color: red;
+  }
 }

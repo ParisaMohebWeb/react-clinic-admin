@@ -1,30 +1,20 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ModalRegister from "../components/ModalRegister";
 import { toast } from "react-toastify";
 import Modal from "../components/Modal";
 import DeleteDoctor from "../components/ِDeleteDoctor";
 import RegisterForm from "../components/RegisterForm";
 import EditDoctor from "../components/EditDoctor";
-
-interface IDoctor {
-  id: number;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  medicalLicenseNumber: string;
-  phoneNumber: number;
-  gender: number;
-  genderDisplay: string;
-  specialty: {
-    id: number;
-    name: string;
-    doctorsCount: number;
-  };
-}
+import DoctorSearch from "../components/DoctorSearch";
+import { useDoctorStore } from "../assets/hooks/DoctorHook";
+import type { IDoctor } from "../assets/types/doctor";
 
 export default function Doctor() {
-  const [doctorInfo, setDoctorInfo] = useState<IDoctor[]>([]);
+  const defaultPageSize = 10; //  تغییر به 10
+  const { allDoctors, searchedDoctors, searchDone, setAllDoctors } =
+    useDoctorStore();
+
   const [specialties, setSpecialties] = useState<Record<number, string>>({});
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,16 +22,18 @@ export default function Doctor() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectItem, setSelectItem] = useState<IDoctor | null>(null);
 
-  const GetDocterList = async () => {
+  //  تعداد ردیف‌های قابل مشاهده
+  const [visibleCount, setVisibleCount] = useState(defaultPageSize);
+
+  const GetDocterList = useCallback(async () => {
     try {
       const res = await axios.get("https://nowruzi.top/api/Clinic/doctors");
-      setDoctorInfo([...res.data].reverse());
+      const doctors = [...res.data].reverse();
+      setAllDoctors(doctors);
       setIsLoading(false);
-      console.log(res.data);
 
-      // واکشی تخصص‌ها برای هر پزشک
       const specialtyMap: Record<number, string> = {};
-      for (const doctor of res.data) {
+      for (const doctor of doctors) {
         const id = doctor.specialty.id;
         if (!specialtyMap[id]) {
           try {
@@ -58,45 +50,39 @@ export default function Doctor() {
     } catch (err) {
       console.log(err, "خطایی در گرفتن داده رخ داده است");
     }
-  };
+  }, [setAllDoctors]);
+
   useEffect(() => {
     GetDocterList();
-  }, []);
+  }, [GetDocterList]);
 
-  // برای کنترل اسکرول نخوردن صفحه بعد از باز شدن مدال
+  // جلوگیری از اسکرول هنگام باز بودن مدال‌ها
   useEffect(() => {
-    if (showModal) {
-      document.body.style.overflow = "hidden"; // قفل اسکرول
-    } else {
-      document.body.style.overflow = "auto"; // برگردوندن حالت عادی
-    }
-    // تمیزکاری در صورت ترک صفحه
+    document.body.style.overflow = showModal ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [showModal]);
 
   useEffect(() => {
-    if (isDeleteModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isDeleteModalOpen ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isDeleteModalOpen]);
 
   useEffect(() => {
-    if (isEditModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isEditModalOpen ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isEditModalOpen]);
+
+  // تعیین لیست برای نمایش
+  const doctorsToShow = searchDone ? searchedDoctors : allDoctors;
+
+  //  فقط بخشی از دکترها رو نشون بده
+  const doctorsVisible = doctorsToShow.slice(0, visibleCount);
 
   return isLoading ? (
     <div className="lds-ellipsis">
@@ -110,14 +96,9 @@ export default function Doctor() {
       <div>
         <div>
           <h3>لیست پزشکان</h3>
-          <input
-            className="input-blue"
-            type="text"
-            placeholder="🔎جستجو پزشک"
-          />
+          <DoctorSearch />
         </div>
         <button onClick={() => setShowModal(true)} className="btn-green">
-          {" "}
           ➕ افزودن پزشک
         </button>
         {showModal && (
@@ -137,17 +118,22 @@ export default function Doctor() {
       <table className="tb-doctor">
         <tbody>
           <tr>
+            <th>ردیف</th>
             <th>نام و نام خانوادگی</th>
             <th>شماره تماس</th>
-            <th>تخصص </th>
-            <th>عملیات </th>
+            <th>تخصص</th>
+            <th>تعداد نوبت</th>
+            <th>عملیات</th>
           </tr>
 
-          {doctorInfo.map((item) => (
+          {doctorsVisible.map((item, index) => (
             <tr key={item.id}>
+              <td>{index + 1}</td>
               <td>{item.fullName}</td>
               <td>{item.phoneNumber}</td>
               <td>{specialties[item.specialty.id] || "در حال بارگذاری..."}</td>
+              <td>{item.schedulesCount}</td>
+
               <td>
                 <button
                   onClick={() => {
@@ -156,7 +142,7 @@ export default function Doctor() {
                   }}
                   className="btn-red"
                 >
-                  حذف
+                  <i className="bi bi-trash"></i>
                 </button>
                 <Modal
                   isOpen={isDeleteModalOpen}
@@ -180,7 +166,7 @@ export default function Doctor() {
                   }}
                   className="btn-green"
                 >
-                  ویرایش
+                  <i className="bi bi-pen"></i>
                 </button>
                 <Modal
                   isOpen={isEditModalOpen}
@@ -195,7 +181,6 @@ export default function Doctor() {
                       gender={selectItem.gender}
                       fullName={selectItem.fullName}
                       specialtyIdDoctor={selectItem.specialty.id}
-                      
                     />
                   )}
                 </Modal>
@@ -204,6 +189,19 @@ export default function Doctor() {
           ))}
         </tbody>
       </table>
+    
+    {/* نمایش بیشتر */}
+
+      {visibleCount < doctorsToShow.length && (
+        <div className="show-more">
+          <button
+            onClick={() => setVisibleCount((prev) => prev + defaultPageSize)}
+            className="btn-blue"
+          >
+            نمایش بیشتر
+          </button>
+        </div>
+      )}
     </div>
   );
 }
