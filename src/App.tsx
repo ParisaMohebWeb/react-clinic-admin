@@ -7,6 +7,7 @@ import Specialties from './pages/Specialties';
 import Doctor from './pages/Doctor';
 import Patients from './pages/Patients';
 import Schedules from './pages/Schedules';
+import Appointments from './pages/Appointments';
 
 
 /**
@@ -39,7 +40,7 @@ function App() {
                     <Route index element={<Dashboard />} />
                     <Route path="patients" element={<Patients/>} />
                     <Route path="doctors" element={<Doctor/>} />
-                    <Route path="appointments" element={<div>صفحه نوبت‌ها</div>} />
+                    <Route path="appointments" element={<Appointments/>} />
                     <Route path="specialties" element={<Specialties/>} />
                     <Route path="schedules" element={<Schedules/>} />
                     <Route path="reports" element={<div>صفحه گزارشات</div>} />
